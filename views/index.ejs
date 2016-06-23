@@ -1,0 +1,317 @@
+<html>
+<head>
+<title>Pacman</title>
+<style type="text/css">
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .ground {
+        background-color: black;
+        border: 1px solid black;
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+    }
+    
+    .wall {
+        background-color: black;
+        border: 1px solid black;
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+    }
+    
+        .wall.top{
+            border-top: 1px solid blue;
+            height: 30px;
+        }
+    
+        .wall.bottom{
+            border-bottom: 1px solid blue;
+            height: 30px;
+        }
+    
+        .wall.top.bottom{
+            height: 30px;
+        }
+
+        .wall.right{
+            border-right: 1px solid blue;
+            width: 30px;
+        }
+        
+        .wall.left{
+            border-left: 1px solid blue;
+            width: 30px;
+        }
+    
+        .wall.right.left{
+            width: 30px;
+        }
+    
+    .coin {
+        border-radius: 10px;
+        width: 5px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+        height: 5px;
+        display: block;
+        background-color: lightgoldenrodyellow;
+    }
+    
+    .pacmanRight {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5px;
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 10px solid yellow;
+        border-bottom: 10px solid yellow;
+        border-top: 10px solid yellow;
+        border-right: 10px solid transparent;
+        border-radius: 100%;
+    }
+    .pacmanLeft {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5px;
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-bottom: 10px solid yellow;
+        border-top: 10px solid yellow;
+        border-right: 10px solid yellow;
+        border-radius: 100%;
+    }
+    .pacmanUp {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5px;
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 10px solid yellow;
+        border-bottom: 10px solid yellow;
+        border-top: 10px solid transparent;
+        border-right: 10px solid yellow;
+        border-radius: 100%;
+    }
+    .pacmanDown {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 5px;
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 10px solid yellow;
+        border-bottom: 10px solid transparent;
+        border-top: 10px solid yellow;
+        border-right: 10px solid yellow;
+        border-radius: 100%;
+    }
+    
+    #content {
+        margin: 20px;
+    }
+    
+    #world {
+        width: 608px;
+    }
+    
+    #output {
+        width: 500px;
+        height: 200px;
+        margin-bottom: 10px;
+        padding: 5px;
+        border: 1px solid black;
+        overflow: scroll;
+        word-wrap: break-word; 
+    }
+    
+    #input {
+        width: 500px;
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    #container{
+      background-color: black;
+      width: 464px;
+      height: 480px;
+    }
+    
+</style>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type ="text/javascript">
+        
+        var pacman = {
+            x: 9,
+            y: 11,
+            face: 'pacmanLeft',
+            loop: function(){
+                if(pacman.face == 'pacmanLeft'){
+                    pacman.goLeft();
+                } else if(pacman.face == 'pacmanUp'){
+                    pacman.goUp();
+                } else if(pacman.face == 'pacmanRight'){
+                    pacman.goRight();
+                } else if(pacman.face == 'pacmanDown'){
+                    pacman.goDown();
+                }
+            },
+            goLeft: function(){
+                    if (map[pacman.y][pacman.x-1] == 1){
+                    map[pacman.y][pacman.x-1] = 3;
+                    map[pacman.y][pacman.x] = 2;
+                    score ++;
+                    pacman.x -= 1;
+                } else if (map[pacman.y][pacman.x-1] == 2){
+                    map[pacman.y][pacman.x-1] = 3;
+                    map[pacman.y][pacman.x] = 2;
+                    pacman.x -= 1;
+                } else if (map[pacman.y][pacman.x-1] == undefined){
+                    map[pacman.y][map[0].length-1] = 3;
+                    map[pacman.y][pacman.x] = 2;
+                    pacman.x = map[0].length-1;
+                }
+                drawMap();
+            },
+            goUp: function(){
+                if (map[pacman.y-1][pacman.x] == 1){
+                    map[pacman.y-1][pacman.x] = 3;
+                    map[pacman.y][pacman.x] = 2;
+                    score ++;
+                    pacman.y -= 1;
+                } else if (map[pacman.y-1][pacman.x] == 2){
+                    map[pacman.y-1][pacman.x] = 3;
+                    map[pacman.y][pacman.x] = 2;
+                    pacman.y -= 1;
+                }
+                drawMap();
+            },
+            goRight: function(){
+                if (map[pacman.y][pacman.x+1] == 1){
+                    map[pacman.y][pacman.x+1] = 3;
+                    map[pacman.y][pacman.x] = 2;
+                    score ++;
+                    pacman.x += 1;
+                } else if (map[pacman.y][pacman.x+1] == 2){
+                    map[pacman.y][pacman.x+1] = 3;
+                    map[pacman.y][pacman.x] = 2;
+                    pacman.x += 1;
+                } else if (map[pacman.y][pacman.x+1] == undefined){
+                    map[pacman.y][pacman.x] = 2;
+                    map[pacman.y][0] = 3;
+                    pacman.x = 0;
+                }
+                drawMap();
+            },
+            goDown: function(){
+                if (map[pacman.y+1][pacman.x] == 1){
+                    map[pacman.y+1][pacman.x] = 3;
+                    map[pacman.y][pacman.x] = 2;
+                    score ++;
+                    pacman.y += 1;
+                } else if (map[pacman.y+1][pacman.x] == 2){
+                    map[pacman.y+1][pacman.x] = 3;
+                    map[pacman.y][pacman.x] = 2;
+                    pacman.y += 1;
+                }
+                drawMap();
+            }
+            
+        }
+        
+        var score = 0;
+        
+        var map = [
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                [0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0],
+                [0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0],
+                [0,1,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,1,0],
+                [0,1,1,1,1,0,1,0,0,0,0,0,1,0,1,1,1,1,0],
+                [0,1,0,0,1,0,1,1,1,0,1,1,1,0,1,0,0,1,0],
+                [0,1,1,1,1,0,0,0,1,0,1,0,0,0,1,1,1,1,0],
+                [0,0,0,0,1,0,1,1,1,1,1,1,1,0,1,0,0,0,0],
+                [0,0,0,0,1,0,1,0,0,0,0,0,1,0,1,0,0,0,0],
+                [1,1,1,1,1,1,1,0,2,2,2,0,1,1,1,1,1,1,1],
+                [0,0,0,0,1,0,1,0,0,0,0,0,1,0,1,0,0,0,0],
+                [0,1,1,1,1,0,1,1,1,3,1,1,1,0,1,1,1,1,0],
+                [0,1,0,0,1,0,0,0,1,0,1,0,0,0,1,0,0,1,0],
+                [0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0],
+                [0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0],
+                [0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0],
+                [0,1,0,0,0,1,0,0,1,0,1,0,0,1,0,0,0,1,0],
+                [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+                [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
+        
+        $(document).ready(function (){ 
+            drawMap();
+        });
+        
+        $(document).keydown(function(e){
+            if (e.which == 37) { //left
+                pacman.face = 'pacmanLeft';
+                pacman.goLeft();
+            } else if (e.which == 38) { //up
+                pacman.face = 'pacmanUp';
+                pacman.goUp();
+            } else if (e.which == 39) { //right
+                pacman.face = 'pacmanRight';
+                pacman.goRight();
+            } else if (e.which == 40) { //down
+                pacman.face = 'pacmanDown';
+                pacman.goDown();
+            }
+        });
+        
+        function drawMap(){
+            $('#world').html('');
+            for(var y = 0; y < map.length; y++) {
+                for(var x = 0; x<map[y].length; x++){
+                    var block = '';
+                    if(map[y][x] == 0){
+                        block += "<div class='wall";
+                        if(map[y][x+1] && map[y][x + 1] >= 1){
+                            block += " right";
+                        }
+                        if(map[y][x-1] && map[y][x - 1] >= 1 ){
+                            block += " left";
+                        }
+                        if(map[y+1] != undefined && map[y+1][x] >= 1 ){
+                            block += " bottom";
+                        }
+                        
+                        if(map[y-1] != undefined && map[y-1][x] >= 1 ){
+                            block += " top";
+                        }
+                        block += "'></div>";
+                        $('#world').append(block);
+                    }
+                    if(map[y][x] == 1){
+                        $('#world').append("<div class='ground'><span class='coin'></span></div>")
+                    } else if (map[y][x] == 2){
+                        $('#world').append("<div class='ground'></div>")
+                    } else if (map[y][x] == 3){
+                        $('#world').append("<div class='ground'><span class='" + pacman.face + "'></span></div>")
+                    }
+                }
+                $('#world').append("<br>")
+            }
+        }
+        
+        setInterval(pacman.loop, 250);
+        
+    </script>
+</head>
+<body>    
+    <div id='world'></div>
+</body>
+</html>
